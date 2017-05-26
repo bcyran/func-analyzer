@@ -1,6 +1,5 @@
 package pl.bazylicyran.funcanalyzer.graphics;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -39,6 +38,13 @@ public class FunctionAnalyzerUI extends JPanel {
 	/** Width of the right pane. */
 	private final int rightPaneWidth = paneWidth - leftPaneWidth;
 
+	/** Border width. */
+	private final int borderWidth = 10;
+
+	/** Coordinate system to draw on. */
+	private final CoordinateSystem coordinateSystem = new CoordinateSystem(rightPaneWidth - borderWidth,
+			paneHeight - 2 * borderWidth);
+
 	/**
 	 * Calls method initializing UI.
 	 */
@@ -52,12 +58,12 @@ public class FunctionAnalyzerUI extends JPanel {
 	private void initLeftPane() {
 		leftPane.setPreferredSize(new Dimension(leftPaneWidth, paneHeight));
 		leftPane.setLayout(new GridBagLayout());
-		leftPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		leftPane.setBorder(BorderFactory.createEmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth));
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(5, 0, 5, 0);
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
 		c.weightx = 1;
 		c.weighty = 0;
 		c.gridx = 0;
@@ -84,8 +90,11 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void initRightPane() {
 		rightPane.setPreferredSize(new Dimension(rightPaneWidth, paneHeight));
-		rightPane.setBackground(Color.WHITE);
-		rightPane.setBorder(BorderFactory.createMatteBorder(10, 0, 10, 10, leftPane.getBackground()));
+		rightPane.setLayout(new GridBagLayout());
+		rightPane.setBorder(BorderFactory.createEmptyBorder(borderWidth, 0, borderWidth, borderWidth));
+
+		// Put coordinate system in right pane
+		rightPane.add(coordinateSystem);
 	}
 
 	/**
