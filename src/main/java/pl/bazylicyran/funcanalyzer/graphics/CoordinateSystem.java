@@ -7,6 +7,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import pl.bazylicyran.funcanalyzer.math.CSPoint;
+
 /**
  * Draws Cartesian coordinate system.
  * 

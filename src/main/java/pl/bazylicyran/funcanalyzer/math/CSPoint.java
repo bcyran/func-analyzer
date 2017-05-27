@@ -1,4 +1,4 @@
-package pl.bazylicyran.funcanalyzer.graphics;
+package pl.bazylicyran.funcanalyzer.math;
 
 /**
  * Represents point on Cartesian coordinate system.
