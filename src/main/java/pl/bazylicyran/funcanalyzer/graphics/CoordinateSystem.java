@@ -55,6 +55,30 @@ public class CoordinateSystem extends JPanel {
 	}
 
 	/**
+	 * Zoom system in.
+	 */
+	public void zoomPlus() {
+		unitLength /= 2;
+	}
+
+	/**
+	 * Zoom system out.
+	 */
+	public void zoomMinus() {
+		unitLength += 2;
+	}
+
+	/**
+	 * Move center point by given offset in X and Y axes.
+	 * 
+	 * @param dx Offset to move center by in X axis.
+	 * @param dy Offset to move center by in Y axis.
+	 */
+	public void moveCenter(int dx, int dy) {
+		center.move(-dx, -dy);
+	}
+
+	/**
 	 * Initializes drawing area.
 	 */
 	private void initDrawingArea() {
@@ -89,7 +113,7 @@ public class CoordinateSystem extends JPanel {
 			g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 
 			if (leftmost.getX() != 0) {
-				g.drawString(String.valueOf((int) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 15);
+				g.drawString(String.valueOf((int) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
 			}
 
 			leftmost.move(1, 0);
@@ -106,7 +130,7 @@ public class CoordinateSystem extends JPanel {
 			g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 
 			if (upmost.getY() != 0) {
-				g.drawString(String.valueOf((int) upmost.getY()), scaleXpix1 + 10, scaleYpix + 5);
+				g.drawString(String.valueOf((int) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
 			}
 
 			upmost.move(0, 1);
