@@ -59,6 +59,7 @@ public class FunctionDiscretizer {
 	 */
 	public void setFunction(String function) {
 		input = function;
+		discretized = false;
 	}
 
 	/**
@@ -99,6 +100,8 @@ public class FunctionDiscretizer {
 	 * Discretizes current function.
 	 */
 	private void discretize() {
+		points.clear();
+		
 		function = new FunctionExpression(input);
 		Double value;
 

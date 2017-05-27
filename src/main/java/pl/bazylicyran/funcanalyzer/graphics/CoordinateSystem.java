@@ -45,9 +45,6 @@ public class CoordinateSystem extends JPanel {
 	/** Function to draw. */
 	private String function;
 
-	/** Flag to clean drawing area. */
-	private boolean clear = false;
-
 	/**
 	 * Initializes coordinate system.
 	 */
@@ -64,13 +61,8 @@ public class CoordinateSystem extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		g.clearRect(0, 0, width, height);
 		drawAxes(g);
-
-		if (clear == true) {
-			clearDrawingArea();
-			drawAxes(g);
-			clear = false;
-		}
 
 		if (function != null) {
 			drawFunction(g);
@@ -84,14 +76,6 @@ public class CoordinateSystem extends JPanel {
 	 */
 	public void addFunction(String function) {
 		this.function = function;
-		repaint();
-	}
-
-	/**
-	 * Clears all previously drawn functions.
-	 */
-	public void clearDrawingArea() {
-		clear = true;
 		repaint();
 	}
 

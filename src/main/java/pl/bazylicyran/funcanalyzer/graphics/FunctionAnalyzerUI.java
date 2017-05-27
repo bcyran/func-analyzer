@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -75,11 +77,21 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		// Expression text field
 		JTextField expressionField = new JTextField();
+		expressionField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				drawFunction(expressionField.getText());
+			}
+		});
 		c.gridy = 1;
 		leftPane.add(expressionField, c);
 
 		// Draw button
 		JButton expressionButton = new JButton("Rysuj");
+		expressionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				drawFunction(expressionField.getText());
+			}
+		});
 		c.gridy = 2;
 		c.weighty = 1;
 		leftPane.add(expressionButton, c);
@@ -109,6 +121,15 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		add(leftPane);
 		add(rightPane);
+	}
+
+	/**
+	 * Passes given function to CoordinateSystem and draws it.
+	 * 
+	 * @param function Function to draw.
+	 */
+	private void drawFunction(String function) {
+		coordinateSystem.addFunction(function);
 	}
 
 }
