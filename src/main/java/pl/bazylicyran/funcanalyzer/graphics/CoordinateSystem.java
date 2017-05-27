@@ -101,6 +101,7 @@ public class CoordinateSystem extends JPanel {
 		g.drawLine(xToPix(0), 0, xToPix(0), height);
 
 		int scaleLength = unitLength / 5;
+		int scaleValueInterval = 50 / unitLength;
 
 		// X axis scale
 		CSPoint leftmost = new CSPoint(-(width / 2 / unitLength), 0);
@@ -112,7 +113,7 @@ public class CoordinateSystem extends JPanel {
 			scaleXpix = xToPix((int) leftmost.getX());
 			g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 
-			if (leftmost.getX() != 0) {
+			if (leftmost.getX() != 0 && ((leftmost.getX() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
 				g.drawString(String.valueOf((int) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
 			}
 
@@ -129,7 +130,7 @@ public class CoordinateSystem extends JPanel {
 			scaleYpix = yToPix((int) upmost.getY());
 			g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 
-			if (upmost.getY() != 0) {
+			if (upmost.getY() != 0 && ((upmost.getY() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
 				g.drawString(String.valueOf((int) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
 			}
 
