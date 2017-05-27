@@ -2,8 +2,8 @@ package pl.bazylicyran.funcanalyzer.graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -30,13 +30,13 @@ public class CoordinateSystem extends JPanel {
 	private final Color graphColor = new Color(131, 126, 191);
 
 	/** Point to show in the middle of drawing area. */
-	private Point center = new Point(0, 0);
+	private CSPoint center = new CSPoint(0, 0);
 
 	/** Width of distance between two neighboring points. */
 	private int unitLength = 50;
 
 	/**
-	 * Initialize coordinate system.
+	 * Initializes coordinate system.
 	 */
 	public CoordinateSystem(int width, int height) {
 		this.width = width;
@@ -54,6 +54,9 @@ public class CoordinateSystem extends JPanel {
 		drawAxes(g);
 	}
 
+	/**
+	 * Initializes drawing area.
+	 */
 	private void initDrawingArea() {
 		setPreferredSize(new Dimension(width, height));
 		setBackground(backgroundColor);
@@ -64,12 +67,51 @@ public class CoordinateSystem extends JPanel {
 	 */
 	private void drawAxes(Graphics g) {
 		g.setColor(axesColor);
+		Font font = g.getFont().deriveFont(15.0f);
+		g.setFont(font);
 
 		// X axis
 		g.drawLine(0, yToPix(0), width, yToPix(0));
 
 		// Y axis
 		g.drawLine(xToPix(0), 0, xToPix(0), height);
+
+		int scaleLength = unitLength / 5;
+
+		// X axis scale
+		CSPoint leftmost = new CSPoint(-(width / 2 / unitLength), 0);
+		int scaleYpix1 = yToPix(0) + scaleLength / 2;
+		int scaleYpix2 = yToPix(0) - scaleLength / 2;
+		int scaleXpix;
+
+		while (xToPix((int) leftmost.getX()) < width) {
+			scaleXpix = xToPix((int) leftmost.getX());
+			g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
+
+			if (leftmost.getX() != 0) {
+				g.drawString(String.valueOf((int) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 15);
+			}
+
+			leftmost.move(1, 0);
+		}
+
+		// Y axis scale
+		CSPoint upmost = new CSPoint(0, -(height / 2 / unitLength));
+		int scaleXpix1 = xToPix(0) + scaleLength / 2;
+		int scaleXpix2 = xToPix(0) - scaleLength / 2;
+		int scaleYpix;
+
+		while (yToPix((int) upmost.getY()) < height) {
+			scaleYpix = yToPix((int) upmost.getY());
+			g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
+
+			if (upmost.getY() != 0) {
+				g.drawString(String.valueOf((int) upmost.getY()), scaleXpix1 + 10, scaleYpix + 5);
+			}
+
+			upmost.move(0, 1);
+		}
+
 	}
 
 	/**
