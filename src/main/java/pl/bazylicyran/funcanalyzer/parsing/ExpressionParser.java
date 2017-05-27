@@ -34,6 +34,9 @@ public class ExpressionParser {
 	/** Value of expression. */
 	private double value;
 
+	/** Whether current variable is in domain or not. */
+	private boolean inDomain = true;
+
 	/** Current position of parser. */
 	private int pos = -1;
 
@@ -70,6 +73,12 @@ public class ExpressionParser {
 		addOperator(new ExpOperator("/", Arrays.asList("term")) {
 			@Override
 			public double eval(double left, double right) {
+
+				if (right == 0) {
+					inDomain = false;
+					return 0;
+				}
+
 				return left / right;
 			}
 		});
@@ -90,6 +99,12 @@ public class ExpressionParser {
 		addFunction(new ExpFunction("sqrt", 1) {
 			@Override
 			public double eval(List<Double> args) {
+
+				if (args.get(0) < 0) {
+					inDomain = false;
+					return 0;
+				}
+
 				return Math.sqrt(args.get(0));
 			}
 		});
@@ -114,12 +129,24 @@ public class ExpressionParser {
 		addFunction(new ExpFunction("ln", 1) {
 			@Override
 			public double eval(List<Double> args) {
+
+				if (args.get(1) < 0) {
+					inDomain = false;
+					return 0;
+				}
+
 				return Math.log(args.get(0));
 			}
 		});
 		addFunction(new ExpFunction("log", 2) {
 			@Override
 			public double eval(List<Double> args) {
+
+				if (args.get(0) <= 1 || args.get(1) < 0) {
+					inDomain = false;
+					return 0;
+				}
+
 				return Math.log(args.get(1)) / Math.log(args.get(0));
 			}
 		});
@@ -151,6 +178,15 @@ public class ExpressionParser {
 	public void parse() {
 		nextToken();
 		value = parseExp();
+	}
+
+	/**
+	 * Returns whether or not current variable is in domain.
+	 * 
+	 * @return True if variable is in domain.
+	 */
+	public boolean inDomain() {
+		return inDomain;
 	}
 
 	/**
@@ -187,6 +223,7 @@ public class ExpressionParser {
 	 * @param value Variable value.
 	 */
 	public void addVariable(String name, double value) {
+		inDomain = true;
 		variables.put(name, value);
 	}
 
@@ -289,11 +326,11 @@ public class ExpressionParser {
 			// number
 		} else if (isNumeric(current)) {
 			result = Double.parseDouble(current);
-				
+
 			if (functions.containsKey("number")) {
 				result = functions.get("number").eval(Arrays.asList(result));
 			}
-			
+
 			nextToken();
 
 			// functions
@@ -312,7 +349,7 @@ public class ExpressionParser {
 		} else if (variable != null) {
 			result = variable;
 			nextToken();
-			
+
 			// unknown
 		} else {
 			throw new ExpressionException("Unexpected character.", current);

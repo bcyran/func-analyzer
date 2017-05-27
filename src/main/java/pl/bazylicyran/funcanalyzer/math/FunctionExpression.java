@@ -6,9 +6,12 @@ package pl.bazylicyran.funcanalyzer.math;
  * @author Bazyli Cyran
  */
 public class FunctionExpression extends MathExpression {
-	
+
 	/** Whether vars changed since last eval or not */
 	private boolean varsChanged = false;
+
+	/** Whether current variable is in domain or not. */
+	private boolean inDomain = true;
 
 	/**
 	 * Calls MathExpression constructor
@@ -18,7 +21,7 @@ public class FunctionExpression extends MathExpression {
 	public FunctionExpression(String expression) {
 		super(expression);
 	}
-	
+
 	/**
 	 * Adds new variable (its name and value).
 	 * 
@@ -29,15 +32,43 @@ public class FunctionExpression extends MathExpression {
 		parser.addVariable(name, value);
 		varsChanged = true;
 	}
-	
-	@Override
-	public double getValue() {
-		if (value == null || varsChanged == true) {
+
+	/**
+	 * Returns whether or not current variable is in domain.
+	 * 
+	 * @return True if variable is in domain.
+	 */
+	public boolean inDomain() {
+		if (evaluated == false || varsChanged == true) {
 			eval();
 			varsChanged = false;
 		}
 
-		return value.doubleValue();
+		return inDomain;
+	}
+
+	@Override
+	public Double getValue() {
+		if (evaluated == false || varsChanged == true) {
+			eval();
+			varsChanged = false;
+		}
+
+		return value;
+	}
+
+	@Override
+	protected void eval() {
+		parser.parse();
+		inDomain = parser.inDomain();
+
+		if (inDomain) {
+			value = parser.getValue();
+		} else {
+			value = null;
+		}
+
+		evaluated = true;
 	}
 
 }

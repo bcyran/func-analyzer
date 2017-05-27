@@ -17,7 +17,7 @@ public class MathExpression {
 
 	/** Expression given by user. */
 	private String expression;
-	
+
 	/** Parser instance */
 	protected ExpressionParser parser;
 
@@ -26,6 +26,9 @@ public class MathExpression {
 
 	/** Final value of expression. */
 	protected Double value;
+
+	/** Whether or not expression was evaluated. */
+	protected boolean evaluated = false;
 
 	/**
 	 * Initializes expression variable, calls tokenization method.
@@ -36,7 +39,7 @@ public class MathExpression {
 		this.expression = expression;
 
 		tokenize();
-		
+
 		parser = new ExpressionParser(tokens);
 	}
 
@@ -46,8 +49,8 @@ public class MathExpression {
 	 * 
 	 * @return The value of expression.
 	 */
-	public double getValue() {
-		if (value == null) {
+	public Double getValue() {
+		if (evaluated == false) {
 			eval();
 		}
 
@@ -87,6 +90,8 @@ public class MathExpression {
 		parser.parse();
 
 		value = parser.getValue();
+
+		evaluated = true;
 	}
 
 }
