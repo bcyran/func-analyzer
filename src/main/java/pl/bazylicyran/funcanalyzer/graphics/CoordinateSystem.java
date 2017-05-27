@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import pl.bazylicyran.funcanalyzer.math.CSPoint;
+import pl.bazylicyran.funcanalyzer.math.FunctionDiscretizer;
 
 /**
  * Draws Cartesian coordinate system.
@@ -32,10 +34,19 @@ public class CoordinateSystem extends JPanel {
 	private final Color graphColor = new Color(131, 126, 191);
 
 	/** Point to show in the middle of drawing area. */
-	private CSPoint center = new CSPoint(0, 0);
+	private final CSPoint center = new CSPoint(0.0, 0.0);
+
+	/** Function discretizer. */
+	private final FunctionDiscretizer disc = new FunctionDiscretizer();
 
 	/** Width of distance between two neighboring points. */
 	private int unitLength = 50;
+
+	/** Function to draw. */
+	private String function;
+
+	/** Flag to clean drawing area. */
+	private boolean clear = false;
 
 	/**
 	 * Initializes coordinate system.
@@ -54,6 +65,34 @@ public class CoordinateSystem extends JPanel {
 		super.paintComponent(g);
 
 		drawAxes(g);
+
+		if (clear == true) {
+			clearDrawingArea();
+			drawAxes(g);
+			clear = false;
+		}
+
+		if (function != null) {
+			drawFunction(g);
+		}
+	}
+
+	/**
+	 * Adds function to coordinate system.
+	 * 
+	 * @param function Function to draw.
+	 */
+	public void addFunction(String function) {
+		this.function = function;
+		repaint();
+	}
+
+	/**
+	 * Clears all previously drawn functions.
+	 */
+	public void clearDrawingArea() {
+		clear = true;
+		repaint();
 	}
 
 	/**
@@ -77,7 +116,7 @@ public class CoordinateSystem extends JPanel {
 	 * @param dy Offset to move center by in Y axis.
 	 */
 	public void moveCenter(int dx, int dy) {
-		center.move(-dx, -dy);
+		center.move((double) -dx, (double) -dy);
 	}
 
 	/**
@@ -90,6 +129,8 @@ public class CoordinateSystem extends JPanel {
 
 	/**
 	 * Draw X and Y axes.
+	 * 
+	 * @param g Graphics object.
 	 */
 	private void drawAxes(Graphics g) {
 		g.setColor(axesColor);
@@ -106,37 +147,75 @@ public class CoordinateSystem extends JPanel {
 		int scaleValueInterval = 50 / unitLength;
 
 		// X axis scale
-		CSPoint leftmost = new CSPoint(-(width / 2 / unitLength), 0);
+		CSPoint leftmost = new CSPoint((double) -(width / 2 / unitLength), 0.0);
 		int scaleYpix1 = yToPix(0) + scaleLength / 2;
 		int scaleYpix2 = yToPix(0) - scaleLength / 2;
 		int scaleXpix;
 
-		while (xToPix((int) leftmost.getX()) < width) {
-			scaleXpix = xToPix((int) leftmost.getX());
+		while (xToPix(leftmost.getX()) < width) {
+			scaleXpix = xToPix(leftmost.getX());
 			g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 
 			if (leftmost.getX() != 0 && ((leftmost.getX() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
-				g.drawString(String.valueOf((int) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
+				g.drawString(String.valueOf((int) (double) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
 			}
 
-			leftmost.move(1, 0);
+			leftmost.move(1.0, 0.0);
 		}
 
 		// Y axis scale
-		CSPoint upmost = new CSPoint(0, -(height / 2 / unitLength));
+		CSPoint upmost = new CSPoint(0.0, (double) -(height / 2 / unitLength));
 		int scaleXpix1 = xToPix(0) + scaleLength / 2;
 		int scaleXpix2 = xToPix(0) - scaleLength / 2;
 		int scaleYpix;
 
-		while (yToPix((int) upmost.getY()) < height) {
-			scaleYpix = yToPix((int) upmost.getY());
+		while (yToPix(upmost.getY()) > 0) {
+			scaleYpix = yToPix(upmost.getY());
 			g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 
 			if (upmost.getY() != 0 && ((upmost.getY() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
-				g.drawString(String.valueOf((int) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
+				g.drawString(String.valueOf((int) (double) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
 			}
 
-			upmost.move(0, 1);
+			upmost.move(0.0, 1.0);
+		}
+
+	}
+
+	/**
+	 * Draws current function.
+	 * 
+	 * @param g Graphics object.
+	 */
+	private void drawFunction(Graphics g) {
+		g.setColor(graphColor);
+
+		disc.setFunction(function);
+		disc.setInterval((double) -width / 2 / unitLength, (double) width / 2 / unitLength);
+		disc.setResolution((double) 1 / (unitLength));
+		List<CSPoint> points = disc.getPoints();
+
+		CSPoint point = points.get(0);
+		int lastX = xToPix(point.getX());
+		int lastY = point.getY() != null ? yToPix(point.getY()) : 0;
+		int currentX;
+		int currentY;
+		boolean lastNull;
+		boolean currentNull;
+
+		for (int i = 1; i < points.size(); i++) {
+			lastNull = point.getY() != null ? true : false;
+			point = points.get(i);
+			currentNull = point.getY() != null ? true : false;
+			currentX = xToPix(point.getX());
+			currentY = point.getY() != null ? yToPix(point.getY()) : 0;
+
+			if (lastNull && currentNull && ((lastY >= 0 && lastY <= height) || (currentY >= 0 && currentY <= height))) {
+				g.drawLine(lastX, lastY, currentX, currentY);
+			}
+
+			lastX = currentX;
+			lastY = currentY;
 		}
 
 	}
@@ -147,8 +226,8 @@ public class CoordinateSystem extends JPanel {
 	 * @param x X coordinate.
 	 * @return Pixels.
 	 */
-	private int xToPix(int x) {
-		return (width / 2) + unitLength * (x - (int) center.getX());
+	private int xToPix(double x) {
+		return (width / 2) + (int) ((double) unitLength * (x - center.getX()));
 	}
 
 	/**
@@ -157,8 +236,8 @@ public class CoordinateSystem extends JPanel {
 	 * @param y Y coordinate.
 	 * @return Pixels.
 	 */
-	private int yToPix(int y) {
-		return (height / 2) + unitLength * (y - (int) center.getY());
+	private int yToPix(double y) {
+		return (height / 2) - (int) ((double) unitLength * (y - center.getY()));
 	}
 
 }

@@ -130,7 +130,7 @@ public class ExpressionParser {
 			@Override
 			public double eval(List<Double> args) {
 
-				if (args.get(1) < 0) {
+				if (args.get(0) < 0) {
 					inDomain = false;
 					return 0;
 				}

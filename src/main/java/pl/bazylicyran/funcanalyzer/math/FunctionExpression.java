@@ -43,7 +43,7 @@ public class FunctionExpression extends MathExpression {
 			eval();
 			varsChanged = false;
 		}
-
+		
 		return inDomain;
 	}
 

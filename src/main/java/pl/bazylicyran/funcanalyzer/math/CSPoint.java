@@ -8,10 +8,10 @@ package pl.bazylicyran.funcanalyzer.math;
 public class CSPoint {
 
 	/** X coordinate of a point. */
-	private float x;
+	private Double x;
 
 	/** Y coordinate of a point. */
-	private float y;
+	private Double y;
 
 	/**
 	 * Initializes point coordinates.
@@ -19,7 +19,7 @@ public class CSPoint {
 	 * @param x X coordinate.
 	 * @param y Y coordinate.
 	 */
-	public CSPoint(float x, float y) {
+	public CSPoint(Double x, Double y) {
 		this.set(x, y);
 	}
 
@@ -29,7 +29,7 @@ public class CSPoint {
 	 * @param x Value to set as X coordinate.
 	 * @param y Value to set as Y coordinate.
 	 */
-	public void set(float x, float y) {
+	public void set(Double x, Double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -40,7 +40,7 @@ public class CSPoint {
 	 * @param dx Offset to move point on X axis.
 	 * @param dy Offset to move point on Y axis.
 	 */
-	public void move(float dx, float dy) {
+	public void move(double dx, double dy) {
 		x += dx;
 		y += dy;
 	}
@@ -50,7 +50,7 @@ public class CSPoint {
 	 * 
 	 * @return X coordinate.
 	 */
-	public float getX() {
+	public Double getX() {
 		return x;
 	}
 
@@ -59,7 +59,7 @@ public class CSPoint {
 	 * 
 	 * @return Y coordinate.
 	 */
-	public float getY() {
+	public Double getY() {
 		return y;
 	}
 
