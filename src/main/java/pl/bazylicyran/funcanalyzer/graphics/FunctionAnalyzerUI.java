@@ -73,7 +73,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 0;
 
 		// Function section label
-		JLabel expressionLabel = new JLabel("Rysowanie funkcji");
+		JLabel expressionLabel = new JLabel("Functions");
 		c.gridy = 0;
 		c.gridwidth = 4;
 		leftPane.add(expressionLabel, c);
@@ -89,7 +89,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(expressionField, c);
 
 		// Draw button
-		JButton expressionButton = new JButton("Rysuj");
+		JButton expressionButton = new JButton("Draw");
 		expressionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawFunction(expressionField.getText());
@@ -99,7 +99,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(expressionButton, c);
 
 		// Add button
-		JButton addButton = new JButton("Dodaj");
+		JButton addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addFunction(expressionField.getText());
@@ -112,7 +112,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(addButton, c);
 
 		// Clear button
-		JButton clearButton = new JButton("Wyczyœæ");
+		JButton clearButton = new JButton("Clear");
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearFunction();
@@ -126,7 +126,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(clearButton, c);
 
 		// CoordinateSystem section field label
-		JLabel systemLabel = new JLabel("Uk³ad wspó³rzêdnych");
+		JLabel systemLabel = new JLabel("Coordinate system");
 		c.gridx = 0;
 		c.gridy = 4;
 		c.gridwidth = 4;
@@ -134,7 +134,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(systemLabel, c);
 
 		// Zoom- button
-		JButton zoomMinusButton = new JButton("Zoom-");
+		JButton zoomMinusButton = new JButton("Zoom -");
 		zoomMinusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomMinus();
@@ -147,7 +147,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.add(zoomMinusButton, c);
 
 		// Zoom+ button
-		JButton zoomPlusButton = new JButton("Zoom+");
+		JButton zoomPlusButton = new JButton("Zoom +");
 		zoomPlusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomPlus();
