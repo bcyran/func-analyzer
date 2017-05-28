@@ -1,5 +1,7 @@
 package pl.bazylicyran.funcanalyzer.graphics;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -72,11 +74,13 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.weighty = 0;
 		c.gridx = 0;
 
+		int anchor = GridBagConstraints.NORTHWEST;
+		int fill = GridBagConstraints.HORIZONTAL;
+		Insets insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
+
 		// Function section label
 		JLabel expressionLabel = new JLabel("Functions");
-		c.gridy = 0;
-		c.gridwidth = 4;
-		leftPane.add(expressionLabel, c);
+		addElement(leftPane, expressionLabel, 0, 0, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Expression text field
 		JTextField expressionField = new JTextField();
@@ -85,8 +89,7 @@ public class FunctionAnalyzerUI extends JPanel {
 				drawFunction(expressionField.getText());
 			}
 		});
-		c.gridy = 1;
-		leftPane.add(expressionField, c);
+		addElement(leftPane, expressionField, 0, 1, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Draw button
 		JButton expressionButton = new JButton("Draw");
@@ -95,8 +98,7 @@ public class FunctionAnalyzerUI extends JPanel {
 				drawFunction(expressionField.getText());
 			}
 		});
-		c.gridy = 2;
-		leftPane.add(expressionButton, c);
+		addElement(leftPane, expressionButton, 0, 2, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Add button
 		JButton addButton = new JButton("Add");
@@ -105,11 +107,7 @@ public class FunctionAnalyzerUI extends JPanel {
 				addFunction(expressionField.getText());
 			}
 		});
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		leftPane.add(addButton, c);
+		addElement(leftPane, addButton, 0, 3, 2, 1, 0, 0, anchor, fill, insets);
 
 		// Clear button
 		JButton clearButton = new JButton("Clear");
@@ -118,20 +116,13 @@ public class FunctionAnalyzerUI extends JPanel {
 				clearFunction();
 			}
 		});
-		c.gridx = 2;
-		c.gridy = 3;
-		c.gridwidth = 2;
-
-		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		leftPane.add(clearButton, c);
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, clearButton, 2, 3, 2, 1, 0, 0, anchor, fill, insets);
 
 		// CoordinateSystem section field label
 		JLabel systemLabel = new JLabel("Coordinate system");
-		c.gridx = 0;
-		c.gridy = 4;
-		c.gridwidth = 4;
-		c.insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
-		leftPane.add(systemLabel, c);
+		insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
+		addElement(leftPane, systemLabel, 0, 4, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Zoom- button
 		JButton zoomMinusButton = new JButton("Zoom -");
@@ -140,11 +131,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				zoomMinus();
 			}
 		});
-		c.gridx = 0;
-		c.gridy = 5;
-		c.gridwidth = 2;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		leftPane.add(zoomMinusButton, c);
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		addElement(leftPane, zoomMinusButton, 0, 5, 2, 1, 1, 0, anchor, fill, insets);
 
 		// Zoom+ button
 		JButton zoomPlusButton = new JButton("Zoom +");
@@ -153,11 +141,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				zoomPlus();
 			}
 		});
-		c.gridx = 2;
-		c.gridy = 5;
-		c.gridwidth = 2;
-		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		leftPane.add(zoomPlusButton, c);
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, zoomPlusButton, 2, 5, 2, 1, 1, 0, anchor, fill, insets);
 
 		// Move left button
 		JButton moveLeftButton = new JButton("<");
@@ -166,11 +151,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				moveLeft();
 			}
 		});
-		c.gridx = 0;
-		c.gridy = 6;
-		c.gridwidth = 1;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		leftPane.add(moveLeftButton, c);
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		addElement(leftPane, moveLeftButton, 0, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move down button
 		JButton moveDownButton = new JButton("v");
@@ -179,11 +161,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				moveDown();
 			}
 		});
-		c.gridx = 1;
-		c.gridy = 6;
-		c.gridwidth = 1;
-		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		leftPane.add(moveDownButton, c);
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveDownButton, 1, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move up button
 		JButton moveUpButton = new JButton("^");
@@ -192,11 +171,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				moveUp();
 			}
 		});
-		c.gridx = 2;
-		c.gridy = 6;
-		c.gridwidth = 1;
-		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		leftPane.add(moveUpButton, c);
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveUpButton, 2, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move right button
 		JButton moveRightButton = new JButton(">");
@@ -205,11 +181,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				moveRight();
 			}
 		});
-		c.gridx = 3;
-		c.gridy = 6;
-		c.gridwidth = 1;
-		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		leftPane.add(moveRightButton, c);
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, moveRightButton, 3, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Reset button
 		JButton resetButton = new JButton("Reset");
@@ -218,12 +191,8 @@ public class FunctionAnalyzerUI extends JPanel {
 				resetMovement();
 			}
 		});
-		c.gridx = 0;
-		c.gridy = 7;
-		c.gridwidth = 4;
-		c.weighty = 1;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
-		leftPane.add(resetButton, c);
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
+		addElement(leftPane, resetButton, 0, 7, 4, 1, 0, 1, anchor, fill, insets);
 	}
 
 	/**
@@ -261,6 +230,18 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		add(leftPane);
 		add(rightPane);
+	}
+
+	/**
+	 * Shortcut for adding elements using GridBacContraints.
+	 * 
+	 * @param c Container.
+	 * @param e Element to add.
+	 */
+	private void addElement(Container c, Component e, int gx, int gy, int gw, int gh, double wx, double wy, int anc,
+			int fill, Insets ins) {
+		GridBagConstraints gbc = new GridBagConstraints(gx, gy, gw, gh, wx, wy, anc, fill, ins, 0, 0);
+		c.add(e, gbc);
 	}
 
 	/**
