@@ -75,7 +75,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		// Function section label
 		JLabel expressionLabel = new JLabel("Rysowanie funkcji");
 		c.gridy = 0;
-		c.gridwidth = 2;
+		c.gridwidth = 4;
 		leftPane.add(expressionLabel, c);
 
 		// Expression text field
@@ -107,7 +107,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		});
 		c.gridx = 0;
 		c.gridy = 3;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		leftPane.add(addButton, c);
 
@@ -118,9 +118,9 @@ public class FunctionAnalyzerUI extends JPanel {
 				clearFunction();
 			}
 		});
-		c.gridx = 1;
+		c.gridx = 2;
 		c.gridy = 3;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
 		leftPane.add(clearButton, c);
@@ -129,7 +129,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		JLabel systemLabel = new JLabel("Uk³ad wspó³rzêdnych");
 		c.gridx = 0;
 		c.gridy = 4;
-		c.gridwidth = 2;
+		c.gridwidth = 4;
 		c.insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
 		leftPane.add(systemLabel, c);
 
@@ -142,7 +142,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		});
 		c.gridx = 0;
 		c.gridy = 5;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		leftPane.add(zoomPlusButton, c);
 
@@ -153,12 +153,66 @@ public class FunctionAnalyzerUI extends JPanel {
 				zoomMinus();
 			}
 		});
-		c.gridx = 1;
+		c.gridx = 2;
 		c.gridy = 5;
+		c.gridwidth = 2;
+		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		leftPane.add(zoomMinusButton, c);
+		
+		// Move left button
+		JButton moveLeftButton = new JButton("<");
+		moveLeftButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				moveLeft();
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		leftPane.add(moveLeftButton, c);
+		
+		// Move down button
+		JButton moveDownButton = new JButton("v");
+		moveDownButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				moveDown();
+			}
+		});
+		c.gridx = 1;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.weighty = 1;
+		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		leftPane.add(moveDownButton, c);
+		
+		// Move up button
+		JButton moveUpButton = new JButton("^");
+		moveUpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				moveUp();
+			}
+		});
+		c.gridx = 2;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.weighty = 1;
+		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		leftPane.add(moveUpButton, c);
+		
+		// Move right button
+		JButton moveRightButton = new JButton(">");
+		moveRightButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				moveRight();
+			}
+		});
+		c.gridx = 3;
+		c.gridy = 6;
 		c.gridwidth = 1;
 		c.weighty = 1;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		leftPane.add(zoomMinusButton, c);
+		leftPane.add(moveRightButton, c);
 	}
 
 	/**
@@ -240,6 +294,34 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void zoomMinus() {
 		coordinateSystem.zoomMinus();
+	}
+
+	/**
+	 * Move coordinate system left.
+	 */
+	private void moveLeft() {
+		coordinateSystem.moveCenter(-1, 0);
+	}
+
+	/**
+	 * Move coordinate system down.
+	 */
+	private void moveDown() {
+		coordinateSystem.moveCenter(0, -1);
+	}
+
+	/**
+	 * Move coordinate system up.
+	 */
+	private void moveUp() {
+		coordinateSystem.moveCenter(0, 1);
+	}
+
+	/**
+	 * Move coordinate system right.
+	 */
+	private void moveRight() {
+		coordinateSystem.moveCenter(1, 0);
 	}
 
 }

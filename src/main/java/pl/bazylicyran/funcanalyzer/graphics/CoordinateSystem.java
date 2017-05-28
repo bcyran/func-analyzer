@@ -147,7 +147,12 @@ public class CoordinateSystem extends JPanel {
 	 * @param dy Offset to move center by in Y axis.
 	 */
 	public void moveCenter(int dx, int dy) {
-		center.move((double) -dx, (double) -dy);
+		center.move((double) -dx * (50 / unitLength), (double) -dy * (50 / unitLength));
+		clearDrawingArea();
+
+		if (!functions.isEmpty()) {
+			drawFunctions();
+		}
 	}
 
 	/**
@@ -174,11 +179,18 @@ public class CoordinateSystem extends JPanel {
 		// Y axis
 		g.drawLine(xToPix(0), 0, xToPix(0), height);
 
+		// Length of line indicating point on axis
 		int scaleLength = 10;
+		
+		// How frequent points should be marked on axis
 		int scaleValueInterval = 50 / unitLength;
+		
+		// First visible point from the left and from the bottom
+		double visibleLeft = (double) Math.round(pixToX(0)) + center.getX();
+		double visibleBottom = (double) Math.round(pixToY(0)) + center.getY();
 
 		// X axis scale
-		CSPoint leftmost = new CSPoint((double) -(width / 2 / unitLength), 0.0);
+		CSPoint leftmost = new CSPoint(visibleLeft, 0.0);
 		int scaleYpix1 = yToPix(0) + scaleLength / 2;
 		int scaleYpix2 = yToPix(0) - scaleLength / 2;
 		int scaleXpix;
@@ -195,7 +207,7 @@ public class CoordinateSystem extends JPanel {
 		}
 
 		// Y axis scale
-		CSPoint upmost = new CSPoint(0.0, (double) -(height / 2 / unitLength));
+		CSPoint upmost = new CSPoint(0.0, visibleBottom);
 		int scaleXpix1 = xToPix(0) + scaleLength / 2;
 		int scaleXpix2 = xToPix(0) - scaleLength / 2;
 		int scaleYpix;
@@ -224,9 +236,12 @@ public class CoordinateSystem extends JPanel {
 		Graphics g = canvas.getGraphics();
 
 		g.setColor(currentColor);
+		
+		double visibleLeft = (double) Math.round(pixToX(0)) + center.getX();
+		double visibleRight = (double) Math.round(pixToX(width)) + center.getX();
 
 		disc.setFunction(function);
-		disc.setInterval((double) -width / 2 / unitLength, (double) width / 2 / unitLength);
+		disc.setInterval(visibleLeft, visibleRight);
 		disc.setResolution((double) 1 / (unitLength));
 		List<CSPoint> points = disc.getPoints();
 
@@ -294,6 +309,28 @@ public class CoordinateSystem extends JPanel {
 	 */
 	private int yToPix(double y) {
 		return (height / 2) - (int) ((double) unitLength * (y - center.getY()));
+	}
+
+	/**
+	 * Calculates X coordinate from pixel value.
+	 * 
+	 * @param pix Pixels.
+	 * @return X Coordinate.
+	 */
+	private double pixToX(int pix) {
+		double half = width / 2;
+		return half <= pix ? (double) (pix - half) / unitLength : (double) -(half - pix) / unitLength;
+	}
+
+	/**
+	 * Calculates Y coordinate from pixel value.
+	 * 
+	 * @param pix Pixels.
+	 * @return Y Coordinate.
+	 */
+	private double pixToY(int pix) {
+		double half = height / 2;
+		return half < pix ? (double) (pix - half) / unitLength : (double) -(half - pix) / unitLength;
 	}
 
 }
