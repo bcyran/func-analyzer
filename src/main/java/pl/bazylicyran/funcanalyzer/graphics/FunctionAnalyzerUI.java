@@ -267,17 +267,7 @@ public class FunctionAnalyzerUI extends JPanel {
 			try {
 				coordinateSystem.addFunction(function);
 			} catch (ExpressionException e) {
-				String message = e.getMessage();
-
-				if (e.getToken() != null) {
-					message += "\nCurrent token: " + e.getToken();
-				}
-
-				if (e.getLastToken() != null) {
-					message += "\nLast token: " + e.getLastToken();
-				}
-
-				JOptionPane.showMessageDialog(this, message, "Expression error", JOptionPane.ERROR_MESSAGE);
+				expressionError(e);
 			}
 		}
 	}
@@ -337,6 +327,29 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void resetMovement() {
 		coordinateSystem.resetMovement();
+	}
+
+	/**
+	 * Show error message.
+	 * 
+	 * @param e Exception.
+	 */
+	private void expressionError(ExpressionException e) {
+
+		String message = e.getMessage();
+
+		if (e.getToken() != null) {
+			message += "\nCurrent token: " + e.getToken();
+		}
+
+		if (e.getLastToken() != null) {
+			message += "\nLast token: " + e.getLastToken();
+		}
+
+		JOptionPane.showMessageDialog(this, message, "Expression error", JOptionPane.ERROR_MESSAGE);
+		
+		coordinateSystem.clearLastFunction();
+		coordinateSystem.drawFunctions();
 	}
 
 }

@@ -75,6 +75,22 @@ public class CoordinateSystem extends JPanel {
 	}
 
 	/**
+	 * Draws all current functions.
+	 */
+	public void drawFunctions() {
+		clearDrawingArea();
+
+		if (functions.isEmpty()) {
+			return;
+		}
+
+		for (int i = 0; i < functions.size(); i++) {
+			setColor(graphColors.get(i % graphColors.size()));
+			drawFunction(functions.get(i));
+		}
+	}
+
+	/**
 	 * Clears all previously drawn functions and draws axes.
 	 */
 	public void clearDrawingArea() {
@@ -101,6 +117,13 @@ public class CoordinateSystem extends JPanel {
 	 */
 	public void clearFunctions() {
 		functions.clear();
+	}
+
+	/**
+	 * Removes last add function.
+	 */
+	public void clearLastFunction() {
+		functions.remove(functions.size() - 1);
 	}
 
 	/**
@@ -285,22 +308,6 @@ public class CoordinateSystem extends JPanel {
 	 */
 	private void setColor(Color color) {
 		currentColor = color;
-	}
-
-	/**
-	 * Draws all current functions.
-	 */
-	private void drawFunctions() {
-		clearDrawingArea();
-
-		if (functions.isEmpty()) {
-			return;
-		}
-
-		for (int i = 0; i < functions.size(); i++) {
-			setColor(graphColors.get(i % graphColors.size()));
-			drawFunction(functions.get(i));
-		}
 	}
 
 	/**
