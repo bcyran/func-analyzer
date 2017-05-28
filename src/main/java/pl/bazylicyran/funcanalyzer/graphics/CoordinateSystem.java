@@ -121,11 +121,8 @@ public class CoordinateSystem extends JPanel {
 		}
 
 		unitLength *= 2;
-		clearDrawingArea();
 
-		if (!functions.isEmpty()) {
-			drawFunctions();
-		}
+		drawFunctions();
 	}
 
 	/**
@@ -137,11 +134,8 @@ public class CoordinateSystem extends JPanel {
 		}
 
 		unitLength /= 2;
-		clearDrawingArea();
 
-		if (!functions.isEmpty()) {
-			drawFunctions();
-		}
+		drawFunctions();
 	}
 
 	/**
@@ -153,11 +147,18 @@ public class CoordinateSystem extends JPanel {
 	public void moveCenter(int dx, int dy) {
 		double delta = (double) Math.ceil(50 / (double) unitLength);
 		center.move(-dx * delta, -dy * delta);
-		clearDrawingArea();
 
-		if (!functions.isEmpty()) {
-			drawFunctions();
-		}
+		drawFunctions();
+	}
+
+	/**
+	 * Sets center point and zoom to default values.
+	 */
+	public void resetMovement() {
+		center.set(0.0, 0.0);
+		unitLength = 50;
+
+		drawFunctions();
 	}
 
 	/**
@@ -290,6 +291,12 @@ public class CoordinateSystem extends JPanel {
 	 * Draws all current functions.
 	 */
 	private void drawFunctions() {
+		clearDrawingArea();
+
+		if (functions.isEmpty()) {
+			return;
+		}
+
 		for (int i = 0; i < functions.size(); i++) {
 			setColor(graphColors.get(i % graphColors.size()));
 			drawFunction(functions.get(i));

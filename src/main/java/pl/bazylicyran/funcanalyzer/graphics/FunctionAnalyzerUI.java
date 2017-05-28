@@ -132,7 +132,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridwidth = 4;
 		c.insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
 		leftPane.add(systemLabel, c);
-		
+
 		// Zoom- button
 		JButton zoomMinusButton = new JButton("Zoom-");
 		zoomMinusButton.addActionListener(new ActionListener() {
@@ -158,7 +158,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridwidth = 2;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
 		leftPane.add(zoomPlusButton, c);
-		
+
 		// Move left button
 		JButton moveLeftButton = new JButton("<");
 		moveLeftButton.addActionListener(new ActionListener() {
@@ -171,7 +171,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridwidth = 1;
 		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		leftPane.add(moveLeftButton, c);
-		
+
 		// Move down button
 		JButton moveDownButton = new JButton("v");
 		moveDownButton.addActionListener(new ActionListener() {
@@ -182,10 +182,9 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 1;
 		c.gridy = 6;
 		c.gridwidth = 1;
-		c.weighty = 1;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
 		leftPane.add(moveDownButton, c);
-		
+
 		// Move up button
 		JButton moveUpButton = new JButton("^");
 		moveUpButton.addActionListener(new ActionListener() {
@@ -196,10 +195,9 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 2;
 		c.gridy = 6;
 		c.gridwidth = 1;
-		c.weighty = 1;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
 		leftPane.add(moveUpButton, c);
-		
+
 		// Move right button
 		JButton moveRightButton = new JButton(">");
 		moveRightButton.addActionListener(new ActionListener() {
@@ -210,9 +208,22 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 3;
 		c.gridy = 6;
 		c.gridwidth = 1;
-		c.weighty = 1;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
 		leftPane.add(moveRightButton, c);
+
+		// Reset button
+		JButton resetButton = new JButton("Reset");
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetMovement();
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 7;
+		c.gridwidth = 4;
+		c.weighty = 1;
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
+		leftPane.add(resetButton, c);
 	}
 
 	/**
@@ -322,6 +333,13 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void moveRight() {
 		coordinateSystem.moveCenter(1, 0);
+	}
+
+	/**
+	 * Set center point and zoom to default.
+	 */
+	private void resetMovement() {
+		coordinateSystem.resetMovement();
 	}
 
 }
