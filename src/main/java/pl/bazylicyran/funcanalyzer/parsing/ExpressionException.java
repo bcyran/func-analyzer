@@ -7,7 +7,11 @@ package pl.bazylicyran.funcanalyzer.parsing;
  */
 public class ExpressionException extends RuntimeException {
 
-	private static final long serialVersionUID = -1393541031453680189L;
+	/** Token which caused the exception. */
+	private String currentToken;
+
+	/** Token directly before the one which caused exception. */
+	private String lastToken;
 
 	/**
 	 * Throws ExpressionException with message.
@@ -19,14 +23,48 @@ public class ExpressionException extends RuntimeException {
 	}
 
 	/**
-	 * Throws ExpressionException with message extended by token which caused
-	 * the error.
+	 * Throws ExpressionException with given message and saves current token.
 	 * 
 	 * @param message Exception message.
-	 * @param token Faulty token.
+	 * @param currentToken Faulty token.
 	 */
-	public ExpressionException(String message, String token) {
-		super(message + " (" + token + ")");
+	public ExpressionException(String message, String currentToken) {
+		super(message);
+
+		this.currentToken = currentToken;
+	}
+
+	/**
+	 * Throws ExpressionException with given message and saves current and last
+	 * token.
+	 * 
+	 * @param message Exception message.
+	 * @param currentToken Faulty token.
+	 * @param lastToken Last token.
+	 */
+	public ExpressionException(String message, String currentToken, String lastToken) {
+		super(message);
+
+		this.currentToken = currentToken;
+		this.lastToken = lastToken;
+	}
+
+	/**
+	 * Returns token which caused exception.
+	 * 
+	 * @return Faulty token.
+	 */
+	public String getToken() {
+		return currentToken;
+	}
+
+	/**
+	 * Returns token before the one which caused the exception.
+	 * 
+	 * @return Token before the faulty token.
+	 */
+	public String getLastToken() {
+		return lastToken;
 	}
 
 }

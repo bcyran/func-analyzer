@@ -14,10 +14,12 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import pl.bazylicyran.funcanalyzer.FunctionAnalyzer;
+import pl.bazylicyran.funcanalyzer.parsing.ExpressionException;
 
 /**
  * User interface for FunctionAnalyzer.
@@ -253,7 +255,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
 			coordinateSystem.clearDrawingArea();
 			coordinateSystem.clearFunctions();
-			coordinateSystem.addFunction(function);
+			addFunction(function);
 		}
 	}
 
@@ -262,7 +264,21 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void addFunction(String function) {
 		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
-			coordinateSystem.addFunction(function);
+			try {
+				coordinateSystem.addFunction(function);
+			} catch (ExpressionException e) {
+				String message = e.getMessage();
+
+				if (e.getToken() != null) {
+					message += "\nCurrent token: " + e.getToken();
+				}
+
+				if (e.getLastToken() != null) {
+					message += "\nLast token: " + e.getLastToken();
+				}
+
+				JOptionPane.showMessageDialog(this, message, "Expression error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 

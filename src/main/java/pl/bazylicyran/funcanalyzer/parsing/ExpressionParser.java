@@ -43,6 +43,9 @@ public class ExpressionParser {
 	/** Current token. */
 	private String current;
 
+	/** Last token. */
+	private String last;
+
 	/**
 	 * Initializes tokens list, basic operators, functions and variables.
 	 * 
@@ -234,6 +237,8 @@ public class ExpressionParser {
 	private void nextToken() {
 		pos++;
 
+		last = current;
+
 		if (pos <= tokens.size() - 1) {
 			current = tokens.get(pos);
 		} else {
@@ -310,6 +315,10 @@ public class ExpressionParser {
 		ExpOperator operator = operators.get(current);
 		ExpFunction function = functions.get(current);
 		Double variable = variables.get(current);
+		
+		if (current == null) {
+			throw new ExpressionException("Unexpected token.", current, last);
+		}
 
 		// positive or negative term
 		if (operator != null && operator.levelAllowed("factor")) {
@@ -320,7 +329,7 @@ public class ExpressionParser {
 		} else if (tokenIs("(")) {
 			result = parseExp();
 			if (!tokenIs(")")) {
-				throw new ExpressionException("Expected closing parethesis.");
+				throw new ExpressionException("Expected closing parethesis.", current, last);
 			}
 
 			// number
@@ -352,7 +361,7 @@ public class ExpressionParser {
 
 			// unknown
 		} else {
-			throw new ExpressionException("Unexpected character.", current);
+			throw new ExpressionException("Unknown token.", current);
 		}
 
 		return result;
