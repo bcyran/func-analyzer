@@ -71,8 +71,9 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 0;
 
 		// Expression field label
-		JLabel expressionLabel = new JLabel("Wzór funkcji:");
+		JLabel expressionLabel = new JLabel("Rysowanie funkcji");
 		c.gridy = 0;
+		c.gridwidth = 2;
 		leftPane.add(expressionLabel, c);
 
 		// Expression text field
@@ -93,8 +94,36 @@ public class FunctionAnalyzerUI extends JPanel {
 			}
 		});
 		c.gridy = 2;
-		c.weighty = 1;
 		leftPane.add(expressionButton, c);
+
+		// Add button
+		JButton addButton = new JButton("Dodaj");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addFunction(expressionField.getText());
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 1;
+		c.weightx = 1;
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		leftPane.add(addButton, c);
+
+		// Clear button
+		JButton clearButton = new JButton("Wyczyœæ");
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearFunction();
+			}
+		});
+		c.gridx = 1;
+		c.gridy = 3;
+		c.gridwidth = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		leftPane.add(clearButton, c);
 	}
 
 	/**
@@ -124,12 +153,33 @@ public class FunctionAnalyzerUI extends JPanel {
 	}
 
 	/**
-	 * Passes given function to CoordinateSystem and draws it.
+	 * Clears CoordinateSystem and draws new function.
 	 * 
 	 * @param function Function to draw.
 	 */
 	private void drawFunction(String function) {
-		coordinateSystem.addFunction(function);
+		String last = coordinateSystem.getFunction();
+		if (!function.isEmpty() && (last == null || (last != null && !last.equals(function)))) {
+			coordinateSystem.clearDrawingArea();
+			coordinateSystem.addFunction(function);
+		}
+	}
+
+	/*
+	 * Draws new function on CoordinateSystem without clearing.
+	 */
+	private void addFunction(String function) {
+		String last = coordinateSystem.getFunction();
+		if (!function.isEmpty() && (last == null || (last != null && !last.equals(function)))) {
+			coordinateSystem.addFunction(function);
+		}
+	}
+
+	/**
+	 * Clears CoordinateSystem.
+	 */
+	private void clearFunction() {
+		coordinateSystem.clearDrawingArea();
 	}
 
 }

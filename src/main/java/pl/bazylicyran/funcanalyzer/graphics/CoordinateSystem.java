@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -45,6 +46,9 @@ public class CoordinateSystem extends JPanel {
 	/** Function to draw. */
 	private String function;
 
+	/** Image to draw everything on. */
+	private BufferedImage canvas;
+
 	/**
 	 * Initializes coordinate system.
 	 */
@@ -52,21 +56,28 @@ public class CoordinateSystem extends JPanel {
 		this.width = width;
 		this.height = height;
 
-		initDrawingArea();
+		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-		repaint();
+		initDrawingArea();
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.clearRect(0, 0, width, height);
-		drawAxes(g);
+		g.drawImage(canvas, 0, 0, null);
+	}
 
-		if (function != null) {
-			drawFunction(g);
-		}
+	/**
+	 * Clears all previously drawn functions and draws axes.
+	 */
+	public void clearDrawingArea() {
+		Graphics g = canvas.getGraphics();
+		g.clearRect(0, 0, width, height);
+		g.setColor(backgroundColor);
+		g.drawRect(0, 0, width, height);
+		g.fillRect(0, 0, width, height);
+		drawAxes();
 	}
 
 	/**
@@ -76,25 +87,34 @@ public class CoordinateSystem extends JPanel {
 	 */
 	public void addFunction(String function) {
 		this.function = function;
-		repaint();
+		drawFunction();
 	}
 
 	/**
-	 * Zoom system in.
+	 * Returns current function.
+	 * 
+	 * @return Current function.
+	 */
+	public String getFunction() {
+		return function;
+	}
+
+	/**
+	 * Zooms system in.
 	 */
 	public void zoomPlus() {
 		unitLength /= 2;
 	}
 
 	/**
-	 * Zoom system out.
+	 * Zooms system out.
 	 */
 	public void zoomMinus() {
 		unitLength += 2;
 	}
 
 	/**
-	 * Move center point by given offset in X and Y axes.
+	 * Moves center point by given offset in X and Y axes.
 	 * 
 	 * @param dx Offset to move center by in X axis.
 	 * @param dy Offset to move center by in Y axis.
@@ -108,15 +128,17 @@ public class CoordinateSystem extends JPanel {
 	 */
 	private void initDrawingArea() {
 		setPreferredSize(new Dimension(width, height));
-		setBackground(backgroundColor);
+		clearDrawingArea();
 	}
 
 	/**
-	 * Draw X and Y axes.
+	 * Draws X and Y axes.
 	 * 
 	 * @param g Graphics object.
 	 */
-	private void drawAxes(Graphics g) {
+	private void drawAxes() {
+		Graphics g = canvas.getGraphics();
+
 		g.setColor(axesColor);
 		Font font = g.getFont().deriveFont(15.0f);
 		g.setFont(font);
@@ -164,6 +186,8 @@ public class CoordinateSystem extends JPanel {
 			upmost.move(0.0, 1.0);
 		}
 
+		g.dispose();
+		repaint();
 	}
 
 	/**
@@ -171,7 +195,9 @@ public class CoordinateSystem extends JPanel {
 	 * 
 	 * @param g Graphics object.
 	 */
-	private void drawFunction(Graphics g) {
+	private void drawFunction() {
+		Graphics g = canvas.getGraphics();
+
 		g.setColor(graphColor);
 
 		disc.setFunction(function);
@@ -202,6 +228,8 @@ public class CoordinateSystem extends JPanel {
 			lastY = currentY;
 		}
 
+		g.dispose();
+		repaint();
 	}
 
 	/**
