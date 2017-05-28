@@ -33,9 +33,9 @@ public class CoordinateSystem extends JPanel {
 	/** Color of axes and labels. */
 	private final Color axesColor = Color.BLACK;
 
-	/** Color of function graph. */
+	/** Consecutive colors when drawing many functions. */
 	private final List<Color> graphColors = Arrays.asList(Color.BLUE, Color.MAGENTA, Color.ORANGE, Color.RED,
-			Color.CYAN, Color.GREEN, Color.PINK);
+			Color.CYAN, Color.GREEN, Color.GRAY, Color.PINK);
 
 	/** Point to show in the middle of drawing area. */
 	private final CSPoint center = new CSPoint(0.0, 0.0);
