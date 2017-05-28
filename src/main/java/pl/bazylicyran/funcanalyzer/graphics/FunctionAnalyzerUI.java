@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -70,7 +72,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.weighty = 0;
 		c.gridx = 0;
 
-		// Expression field label
+		// Function section label
 		JLabel expressionLabel = new JLabel("Rysowanie funkcji");
 		c.gridy = 0;
 		c.gridwidth = 2;
@@ -106,7 +108,6 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 1;
-		c.weightx = 1;
 		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		leftPane.add(addButton, c);
 
@@ -120,10 +121,44 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridx = 1;
 		c.gridy = 3;
 		c.gridwidth = 1;
-		c.weightx = 1;
-		c.weighty = 1;
+
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
 		leftPane.add(clearButton, c);
+
+		// CoordinateSystem section field label
+		JLabel systemLabel = new JLabel("Uk³ad wspó³rzêdnych");
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 2;
+		c.insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
+		leftPane.add(systemLabel, c);
+
+		// Zoom+ button
+		JButton zoomPlusButton = new JButton("Zoom+");
+		zoomPlusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				zoomPlus();
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 5;
+		c.gridwidth = 1;
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		leftPane.add(zoomPlusButton, c);
+
+		// Zoom- button
+		JButton zoomMinusButton = new JButton("Zoom-");
+		zoomMinusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				zoomMinus();
+			}
+		});
+		c.gridx = 1;
+		c.gridy = 5;
+		c.gridwidth = 1;
+		c.weighty = 1;
+		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		leftPane.add(zoomMinusButton, c);
 	}
 
 	/**
@@ -136,6 +171,17 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		// Put coordinate system in right pane
 		rightPane.add(coordinateSystem);
+
+		// Zoom in and out on mouse scroll
+		rightPane.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				if (e.getWheelRotation() < 0) {
+					zoomPlus();
+				} else {
+					zoomMinus();
+				}
+			}
+		});
 	}
 
 	/**
@@ -158,9 +204,9 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * @param function Function to draw.
 	 */
 	private void drawFunction(String function) {
-		String last = coordinateSystem.getFunction();
-		if (!function.isEmpty() && (last == null || (last != null && !last.equals(function)))) {
+		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
 			coordinateSystem.clearDrawingArea();
+			coordinateSystem.clearFunctions();
 			coordinateSystem.addFunction(function);
 		}
 	}
@@ -169,8 +215,7 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * Draws new function on CoordinateSystem without clearing.
 	 */
 	private void addFunction(String function) {
-		String last = coordinateSystem.getFunction();
-		if (!function.isEmpty() && (last == null || (last != null && !last.equals(function)))) {
+		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
 			coordinateSystem.addFunction(function);
 		}
 	}
@@ -180,6 +225,21 @@ public class FunctionAnalyzerUI extends JPanel {
 	 */
 	private void clearFunction() {
 		coordinateSystem.clearDrawingArea();
+		coordinateSystem.clearFunctions();
+	}
+
+	/**
+	 * Zoom in coordinate system.
+	 */
+	private void zoomPlus() {
+		coordinateSystem.zoomPlus();
+	}
+
+	/**
+	 * Zoom out coordinate system.
+	 */
+	private void zoomMinus() {
+		coordinateSystem.zoomMinus();
 	}
 
 }

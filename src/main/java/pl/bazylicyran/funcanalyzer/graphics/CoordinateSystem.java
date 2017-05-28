@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -32,7 +34,8 @@ public class CoordinateSystem extends JPanel {
 	private final Color axesColor = Color.BLACK;
 
 	/** Color of function graph. */
-	private final Color graphColor = new Color(131, 126, 191);
+	private final List<Color> graphColors = Arrays.asList(Color.BLUE, Color.MAGENTA, Color.ORANGE, Color.RED,
+			Color.CYAN, Color.GREEN, Color.PINK);
 
 	/** Point to show in the middle of drawing area. */
 	private final CSPoint center = new CSPoint(0.0, 0.0);
@@ -44,13 +47,16 @@ public class CoordinateSystem extends JPanel {
 	private int unitLength = 50;
 
 	/** Function to draw. */
-	private String function;
+	private List<String> functions = new ArrayList<>();
 
 	/** Image to draw everything on. */
 	private BufferedImage canvas;
 
+	/** Current graph color. */
+	private Color currentColor = graphColors.get(0);
+
 	/**
-	 * Initializes coordinate system.
+	 * Initializes coordinate system and creates canvas.
 	 */
 	public CoordinateSystem(int width, int height) {
 		this.width = width;
@@ -86,31 +92,52 @@ public class CoordinateSystem extends JPanel {
 	 * @param function Function to draw.
 	 */
 	public void addFunction(String function) {
-		this.function = function;
-		drawFunction();
+		this.functions.add(function);
+		drawFunctions();
 	}
 
 	/**
-	 * Returns current function.
-	 * 
-	 * @return Current function.
+	 * Removes all saved functions.
 	 */
-	public String getFunction() {
-		return function;
+	public void clearFunctions() {
+		functions.clear();
+	}
+
+	/**
+	 * Checks if given functions is already drawn.
+	 * 
+	 * @return True if function is already drawn.
+	 */
+	public boolean inFunctions(String function) {
+		return functions.contains(function);
 	}
 
 	/**
 	 * Zooms system in.
 	 */
 	public void zoomPlus() {
-		unitLength /= 2;
+		unitLength *= 2;
+		clearDrawingArea();
+
+		if (!functions.isEmpty()) {
+			drawFunctions();
+		}
 	}
 
 	/**
 	 * Zooms system out.
 	 */
 	public void zoomMinus() {
-		unitLength += 2;
+		if (unitLength / 2 == 0) {
+			return;
+		}
+
+		unitLength /= 2;
+		clearDrawingArea();
+
+		if (!functions.isEmpty()) {
+			drawFunctions();
+		}
 	}
 
 	/**
@@ -133,8 +160,6 @@ public class CoordinateSystem extends JPanel {
 
 	/**
 	 * Draws X and Y axes.
-	 * 
-	 * @param g Graphics object.
 	 */
 	private void drawAxes() {
 		Graphics g = canvas.getGraphics();
@@ -149,7 +174,7 @@ public class CoordinateSystem extends JPanel {
 		// Y axis
 		g.drawLine(xToPix(0), 0, xToPix(0), height);
 
-		int scaleLength = unitLength / 5;
+		int scaleLength = 10;
 		int scaleValueInterval = 50 / unitLength;
 
 		// X axis scale
@@ -160,9 +185,9 @@ public class CoordinateSystem extends JPanel {
 
 		while (xToPix(leftmost.getX()) < width) {
 			scaleXpix = xToPix(leftmost.getX());
-			g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 
 			if (leftmost.getX() != 0 && ((leftmost.getX() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
+				g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 				g.drawString(String.valueOf((int) (double) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
 			}
 
@@ -177,9 +202,9 @@ public class CoordinateSystem extends JPanel {
 
 		while (yToPix(upmost.getY()) > 0) {
 			scaleYpix = yToPix(upmost.getY());
-			g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 
 			if (upmost.getY() != 0 && ((upmost.getY() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
+				g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 				g.drawString(String.valueOf((int) (double) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
 			}
 
@@ -191,14 +216,14 @@ public class CoordinateSystem extends JPanel {
 	}
 
 	/**
-	 * Draws current function.
+	 * Draws given function.
 	 * 
-	 * @param g Graphics object.
+	 * @param function Function to draw.
 	 */
-	private void drawFunction() {
+	private void drawFunction(String function) {
 		Graphics g = canvas.getGraphics();
 
-		g.setColor(graphColor);
+		g.setColor(currentColor);
 
 		disc.setFunction(function);
 		disc.setInterval((double) -width / 2 / unitLength, (double) width / 2 / unitLength);
@@ -230,6 +255,25 @@ public class CoordinateSystem extends JPanel {
 
 		g.dispose();
 		repaint();
+	}
+
+	/**
+	 * Sets given color as current graph color.
+	 * 
+	 * @param color Color to set.
+	 */
+	private void setColor(Color color) {
+		currentColor = color;
+	}
+
+	/**
+	 * Draws all current functions.
+	 */
+	private void drawFunctions() {
+		for (int i = 0; i < functions.size(); i++) {
+			setColor(graphColors.get(i % graphColors.size()));
+			drawFunction(functions.get(i));
+		}
 	}
 
 	/**
