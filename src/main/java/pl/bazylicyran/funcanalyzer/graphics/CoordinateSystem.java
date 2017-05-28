@@ -116,6 +116,10 @@ public class CoordinateSystem extends JPanel {
 	 * Zooms system in.
 	 */
 	public void zoomPlus() {
+		if (unitLength > width / 2) {
+			return;
+		}
+
 		unitLength *= 2;
 		clearDrawingArea();
 
@@ -128,7 +132,7 @@ public class CoordinateSystem extends JPanel {
 	 * Zooms system out.
 	 */
 	public void zoomMinus() {
-		if (unitLength / 2 == 0) {
+		if (unitLength / 2 <= 1) {
 			return;
 		}
 
@@ -147,7 +151,8 @@ public class CoordinateSystem extends JPanel {
 	 * @param dy Offset to move center by in Y axis.
 	 */
 	public void moveCenter(int dx, int dy) {
-		center.move((double) -dx * (50 / unitLength), (double) -dy * (50 / unitLength));
+		double delta = (double) Math.ceil(50 / (double) unitLength);
+		center.move(-dx * delta, -dy * delta);
 		clearDrawingArea();
 
 		if (!functions.isEmpty()) {
@@ -181,10 +186,10 @@ public class CoordinateSystem extends JPanel {
 
 		// Length of line indicating point on axis
 		int scaleLength = 10;
-		
+
 		// How frequent points should be marked on axis
 		int scaleValueInterval = 50 / unitLength;
-		
+
 		// First visible point from the left and from the bottom
 		double visibleLeft = (double) Math.round(pixToX(0)) + center.getX();
 		double visibleBottom = (double) Math.round(pixToY(0)) + center.getY();
@@ -236,9 +241,9 @@ public class CoordinateSystem extends JPanel {
 		Graphics g = canvas.getGraphics();
 
 		g.setColor(currentColor);
-		
-		double visibleLeft = (double) Math.round(pixToX(0)) + center.getX();
-		double visibleRight = (double) Math.round(pixToX(width)) + center.getX();
+
+		double visibleLeft = (double) Math.floor(pixToX(0)) + center.getX();
+		double visibleRight = (double) Math.ceil(pixToX(width)) + center.getX();
 
 		disc.setFunction(function);
 		disc.setInterval(visibleLeft, visibleRight);

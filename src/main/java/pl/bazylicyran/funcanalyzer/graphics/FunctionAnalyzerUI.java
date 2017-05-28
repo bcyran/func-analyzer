@@ -132,6 +132,19 @@ public class FunctionAnalyzerUI extends JPanel {
 		c.gridwidth = 4;
 		c.insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
 		leftPane.add(systemLabel, c);
+		
+		// Zoom- button
+		JButton zoomMinusButton = new JButton("Zoom-");
+		zoomMinusButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				zoomMinus();
+			}
+		});
+		c.gridx = 0;
+		c.gridy = 5;
+		c.gridwidth = 2;
+		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		leftPane.add(zoomMinusButton, c);
 
 		// Zoom+ button
 		JButton zoomPlusButton = new JButton("Zoom+");
@@ -140,24 +153,11 @@ public class FunctionAnalyzerUI extends JPanel {
 				zoomPlus();
 			}
 		});
-		c.gridx = 0;
-		c.gridy = 5;
-		c.gridwidth = 2;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		leftPane.add(zoomPlusButton, c);
-
-		// Zoom- button
-		JButton zoomMinusButton = new JButton("Zoom-");
-		zoomMinusButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				zoomMinus();
-			}
-		});
 		c.gridx = 2;
 		c.gridy = 5;
 		c.gridwidth = 2;
 		c.insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		leftPane.add(zoomMinusButton, c);
+		leftPane.add(zoomPlusButton, c);
 		
 		// Move left button
 		JButton moveLeftButton = new JButton("<");
