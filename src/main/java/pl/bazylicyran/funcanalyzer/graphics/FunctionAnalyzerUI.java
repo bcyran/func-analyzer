@@ -191,21 +191,33 @@ public class FunctionAnalyzerUI extends JPanel {
 			}
 		});
 
+		// Toggle grid
+		insets = new Insets(borderWidth / 4, 0, 0, 0);
+		JCheckBox gridCheck = new JCheckBox("Show grid");
+		addElement(leftPane, gridCheck, 0, 8, 4, 1, 0, 0, anchor, fill, insets);
+		gridCheck.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				coordinateSystem.setGrid(gridCheck.isSelected());
+				coordinateSystem.drawFunctions();
+			}
+		});
+
 		// Function transformations label
 		JLabel transLabel = new JLabel("Function transformations");
 		insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
-		addElement(leftPane, transLabel, 0, 8, 4, 1, 0, 0, anchor, fill, insets);
+		addElement(leftPane, transLabel, 0, 9, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Function transformations checkboxes
 		insets = new Insets(borderWidth / 4, 0, 0, 0);
 		JCheckBox symmetryXcheck = new JCheckBox("X axis symmetry");
-		addElement(leftPane, symmetryXcheck, 0, 9, 4, 1, 0, 0, anchor, fill, insets);
+		addElement(leftPane, symmetryXcheck, 0, 10, 4, 1, 0, 0, anchor, fill, insets);
 		JCheckBox symmetryYcheck = new JCheckBox("Y axis symmetry");
-		addElement(leftPane, symmetryYcheck, 0, 10, 4, 1, 0, 0, anchor, fill, insets);
+		addElement(leftPane, symmetryYcheck, 0, 11, 4, 1, 0, 0, anchor, fill, insets);
 		JCheckBox absXcheck = new JCheckBox("Absolute value of x");
-		addElement(leftPane, absXcheck, 0, 11, 4, 1, 0, 0, anchor, fill, insets);
+		addElement(leftPane, absXcheck, 0, 12, 4, 1, 0, 0, anchor, fill, insets);
 		JCheckBox absYcheck = new JCheckBox("Absolute value of y");
-		addElement(leftPane, absYcheck, 0, 12, 4, 1, 0, 1, anchor, fill, insets);
+		addElement(leftPane, absYcheck, 0, 13, 4, 1, 0, 1, anchor, fill, insets);
 
 		ItemListener checkboxListener = new ItemListener() {
 			@Override

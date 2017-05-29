@@ -33,6 +33,9 @@ public class CoordinateSystem extends JPanel {
 	/** Color of axes and labels. */
 	private final Color axesColor = Color.BLACK;
 
+	/** Color of the grid. */
+	private final Color gridColor = new Color(230, 230, 230);
+
 	/** Consecutive colors when drawing many functions. */
 	private final List<Color> graphColors = Arrays.asList(Color.BLUE, Color.MAGENTA, Color.ORANGE, Color.RED,
 			Color.CYAN, Color.GREEN, Color.GRAY, Color.PINK);
@@ -54,6 +57,9 @@ public class CoordinateSystem extends JPanel {
 
 	/** Current graph color. */
 	private Color currentColor = graphColors.get(0);
+
+	/** Flag whether grid should be drawn or not. */
+	private boolean grid = false;
 
 	/**
 	 * Initializes coordinate system and creates canvas.
@@ -187,6 +193,15 @@ public class CoordinateSystem extends JPanel {
 	}
 
 	/**
+	 * Sets whether grid should be drawn or not.
+	 * 
+	 * @param value True if grid should be drawn.
+	 */
+	public void setGrid(boolean value) {
+		grid = value;
+	}
+
+	/**
 	 * Initializes drawing area.
 	 */
 	private void initDrawingArea() {
@@ -230,6 +245,12 @@ public class CoordinateSystem extends JPanel {
 			scaleXpix = xToPix(leftmost.getX());
 
 			if (leftmost.getX() != 0 && ((leftmost.getX() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
+				if (grid == true) {
+					g.setColor(gridColor);
+					g.drawLine(scaleXpix, 0, scaleXpix, height);
+				}
+
+				g.setColor(axesColor);
 				g.drawLine(scaleXpix, scaleYpix1, scaleXpix, scaleYpix2);
 				g.drawString(String.valueOf((int) (double) leftmost.getX()), scaleXpix - 3, scaleYpix1 + 17);
 			}
@@ -247,6 +268,12 @@ public class CoordinateSystem extends JPanel {
 			scaleYpix = yToPix(upmost.getY());
 
 			if (upmost.getY() != 0 && ((upmost.getY() % scaleValueInterval) == 0 || scaleValueInterval == 0)) {
+				if (grid == true) {
+					g.setColor(gridColor);
+					g.drawLine(0, scaleYpix, width, scaleYpix);
+				}
+
+				g.setColor(axesColor);
 				g.drawLine(scaleXpix1, scaleYpix, scaleXpix2, scaleYpix);
 				g.drawString(String.valueOf((int) (double) upmost.getY()), scaleXpix1 + 7, scaleYpix + 5);
 			}
