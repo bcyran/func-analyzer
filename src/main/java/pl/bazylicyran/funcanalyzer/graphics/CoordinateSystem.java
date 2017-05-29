@@ -123,7 +123,9 @@ public class CoordinateSystem extends JPanel {
 	 * Removes last add function.
 	 */
 	public void clearLastFunction() {
-		functions.remove(functions.size() - 1);
+		if (functions.size() > 0) {
+			functions.remove(functions.size() - 1);
+		}
 	}
 
 	/**

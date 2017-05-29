@@ -8,17 +8,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import pl.bazylicyran.funcanalyzer.FunctionAnalyzer;
+import pl.bazylicyran.funcanalyzer.math.FunctionTransformer;
 import pl.bazylicyran.funcanalyzer.parsing.ExpressionException;
 
 /**
@@ -53,6 +57,12 @@ public class FunctionAnalyzerUI extends JPanel {
 	private final CoordinateSystem coordinateSystem = new CoordinateSystem(rightPaneWidth - borderWidth,
 			paneHeight - 2 * borderWidth);
 
+	/** Function transformer object. */
+	private final FunctionTransformer trans = new FunctionTransformer();
+
+	/** Current function. */
+	private String function;
+
 	/**
 	 * Calls method initializing UI.
 	 */
@@ -67,14 +77,6 @@ public class FunctionAnalyzerUI extends JPanel {
 		leftPane.setPreferredSize(new Dimension(leftPaneWidth, paneHeight));
 		leftPane.setLayout(new GridBagLayout());
 		leftPane.setBorder(BorderFactory.createEmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth));
-
-		GridBagConstraints c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
-		c.weightx = 1;
-		c.weighty = 0;
-		c.gridx = 0;
 
 		int anchor = GridBagConstraints.NORTHWEST;
 		int fill = GridBagConstraints.HORIZONTAL;
@@ -109,6 +111,7 @@ public class FunctionAnalyzerUI extends JPanel {
 				addFunction(expressionField.getText());
 			}
 		});
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		addElement(leftPane, addButton, 0, 3, 2, 1, 0, 0, anchor, fill, insets);
 
 		// Clear button
@@ -194,7 +197,41 @@ public class FunctionAnalyzerUI extends JPanel {
 			}
 		});
 		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
-		addElement(leftPane, resetButton, 0, 7, 4, 1, 0, 1, anchor, fill, insets);
+		addElement(leftPane, resetButton, 0, 7, 4, 1, 0, 0, anchor, fill, insets);
+
+		// Function transformations label
+		JLabel transLabel = new JLabel("Function transformations");
+		insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
+		addElement(leftPane, transLabel, 0, 8, 4, 1, 0, 0, anchor, fill, insets);
+
+		// Function transformations checkboxes
+		insets = new Insets(borderWidth / 4, 0, 0, 0);
+		JCheckBox symmetryXcheck = new JCheckBox("X axis symmetry");
+		addElement(leftPane, symmetryXcheck, 0, 9, 4, 1, 0, 0, anchor, fill, insets);
+		JCheckBox symmetryYcheck = new JCheckBox("Y axis symmetry");
+		addElement(leftPane, symmetryYcheck, 0, 10, 4, 1, 0, 0, anchor, fill, insets);
+		JCheckBox absXcheck = new JCheckBox("Absolute value of x");
+		addElement(leftPane, absXcheck, 0, 11, 4, 1, 0, 0, anchor, fill, insets);
+		JCheckBox absYcheck = new JCheckBox("Absolute value of y");
+		addElement(leftPane, absYcheck, 0, 12, 4, 1, 0, 1, anchor, fill, insets);
+
+		ItemListener checkboxListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				trans.setTransform("symmetryX", symmetryXcheck.isSelected());
+				trans.setTransform("symmetryY", symmetryYcheck.isSelected());
+				trans.setTransform("absX", absXcheck.isSelected());
+				trans.setTransform("absY", absYcheck.isSelected());
+
+				coordinateSystem.clearLastFunction();
+				addFunction(function);
+			}
+		};
+
+		symmetryXcheck.addItemListener(checkboxListener);
+		symmetryYcheck.addItemListener(checkboxListener);
+		absXcheck.addItemListener(checkboxListener);
+		absYcheck.addItemListener(checkboxListener);
 	}
 
 	/**
@@ -252,7 +289,7 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * @param function Function to draw.
 	 */
 	private void drawFunction(String function) {
-		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
+		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(function)) {
 			coordinateSystem.clearDrawingArea();
 			coordinateSystem.clearFunctions();
 			addFunction(function);
@@ -263,12 +300,15 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * Draws new function on CoordinateSystem without clearing.
 	 */
 	private void addFunction(String function) {
-		if (!function.isEmpty() && !coordinateSystem.inFunctions(function)) {
+		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(transform(function))) {
 			try {
-				coordinateSystem.addFunction(function);
+				coordinateSystem.addFunction(transform(function));
 			} catch (ExpressionException e) {
 				expressionError(e);
+				return;
 			}
+
+			this.function = function;
 		}
 	}
 
@@ -330,6 +370,17 @@ public class FunctionAnalyzerUI extends JPanel {
 	}
 
 	/**
+	 * Apply set transformations to function.
+	 * 
+	 * @param function Function to transform.
+	 * @return Transformed function.
+	 */
+	private String transform(String function) {
+		trans.setFunction(function);
+		return trans.transform();
+	}
+
+	/**
 	 * Show error message.
 	 * 
 	 * @param e Exception.
@@ -347,7 +398,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		}
 
 		JOptionPane.showMessageDialog(this, message, "Expression error", JOptionPane.ERROR_MESSAGE);
-		
+
 		coordinateSystem.clearLastFunction();
 		coordinateSystem.drawFunctions();
 	}
