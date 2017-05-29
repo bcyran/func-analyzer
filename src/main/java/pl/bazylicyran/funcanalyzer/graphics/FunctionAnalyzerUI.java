@@ -332,28 +332,28 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * Move coordinate system left.
 	 */
 	private void moveLeft() {
-		coordinateSystem.moveCenter(-1, 0);
+		coordinateSystem.moveCenter(1, 0);
 	}
 
 	/**
 	 * Move coordinate system down.
 	 */
 	private void moveDown() {
-		coordinateSystem.moveCenter(0, -1);
+		coordinateSystem.moveCenter(0, 1);
 	}
 
 	/**
 	 * Move coordinate system up.
 	 */
 	private void moveUp() {
-		coordinateSystem.moveCenter(0, 1);
+		coordinateSystem.moveCenter(0, -1);
 	}
 
 	/**
 	 * Move coordinate system right.
 	 */
 	private void moveRight() {
-		coordinateSystem.moveCenter(1, 0);
+		coordinateSystem.moveCenter(-1, 0);
 	}
 
 	/**
