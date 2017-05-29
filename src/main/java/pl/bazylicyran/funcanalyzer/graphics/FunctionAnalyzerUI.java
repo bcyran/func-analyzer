@@ -284,6 +284,7 @@ public class FunctionAnalyzerUI extends JPanel {
 		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(transform(function))) {
 			coordinateSystem.clearDrawingArea();
 			coordinateSystem.clearFunctions();
+			this.function = "";
 			addFunction(function);
 		}
 	}
@@ -310,6 +311,7 @@ public class FunctionAnalyzerUI extends JPanel {
 	private void clearFunction() {
 		coordinateSystem.clearDrawingArea();
 		coordinateSystem.clearFunctions();
+		function = "";
 	}
 
 	/**
