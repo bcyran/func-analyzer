@@ -300,7 +300,7 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * Draws new function on CoordinateSystem without clearing.
 	 */
 	private void addFunction(String function) {
-		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(transform(function))) {
+		if (function != null && !function.isEmpty()) {
 			try {
 				coordinateSystem.addFunction(transform(function));
 			} catch (ExpressionException e) {
