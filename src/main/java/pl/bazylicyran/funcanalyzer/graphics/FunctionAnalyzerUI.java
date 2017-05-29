@@ -88,41 +88,41 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		// Expression text field
 		JTextField expressionField = new JTextField();
+		addElement(leftPane, expressionField, 0, 1, 4, 1, 0, 0, anchor, fill, insets);
 		expressionField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawFunction(expressionField.getText());
 			}
 		});
-		addElement(leftPane, expressionField, 0, 1, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Draw button
 		JButton expressionButton = new JButton("Draw");
+		addElement(leftPane, expressionButton, 0, 2, 4, 1, 0, 0, anchor, fill, insets);
 		expressionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawFunction(expressionField.getText());
 			}
 		});
-		addElement(leftPane, expressionButton, 0, 2, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Add button
 		JButton addButton = new JButton("Add");
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		addElement(leftPane, addButton, 0, 3, 2, 1, 0, 0, anchor, fill, insets);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addFunction(expressionField.getText());
 			}
 		});
-		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		addElement(leftPane, addButton, 0, 3, 2, 1, 0, 0, anchor, fill, insets);
 
 		// Clear button
 		JButton clearButton = new JButton("Clear");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, clearButton, 2, 3, 2, 1, 0, 0, anchor, fill, insets);
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearFunction();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		addElement(leftPane, clearButton, 2, 3, 2, 1, 0, 0, anchor, fill, insets);
 
 		// CoordinateSystem section field label
 		JLabel systemLabel = new JLabel("Coordinate system");
@@ -131,73 +131,73 @@ public class FunctionAnalyzerUI extends JPanel {
 
 		// Zoom- button
 		JButton zoomMinusButton = new JButton("Zoom -");
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		addElement(leftPane, zoomMinusButton, 0, 5, 2, 1, 1, 0, anchor, fill, insets);
 		zoomMinusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomMinus();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		addElement(leftPane, zoomMinusButton, 0, 5, 2, 1, 1, 0, anchor, fill, insets);
 
 		// Zoom+ button
 		JButton zoomPlusButton = new JButton("Zoom +");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, zoomPlusButton, 2, 5, 2, 1, 1, 0, anchor, fill, insets);
 		zoomPlusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomPlus();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		addElement(leftPane, zoomPlusButton, 2, 5, 2, 1, 1, 0, anchor, fill, insets);
 
 		// Move left button
 		JButton moveLeftButton = new JButton("<");
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
+		addElement(leftPane, moveLeftButton, 0, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveLeftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveLeft();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
-		addElement(leftPane, moveLeftButton, 0, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move down button
 		JButton moveDownButton = new JButton("v");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveDownButton, 1, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveDown();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		addElement(leftPane, moveDownButton, 1, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move up button
 		JButton moveUpButton = new JButton("^");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveUpButton, 2, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveUp();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		addElement(leftPane, moveUpButton, 2, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Move right button
 		JButton moveRightButton = new JButton(">");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, moveRightButton, 3, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveRightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveRight();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		addElement(leftPane, moveRightButton, 3, 6, 1, 1, 1, 0, anchor, fill, insets);
 
 		// Reset button
 		JButton resetButton = new JButton("Reset");
+		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
+		addElement(leftPane, resetButton, 0, 7, 4, 1, 0, 0, anchor, fill, insets);
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetMovement();
 			}
 		});
-		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 0);
-		addElement(leftPane, resetButton, 0, 7, 4, 1, 0, 0, anchor, fill, insets);
 
 		// Function transformations label
 		JLabel transLabel = new JLabel("Function transformations");
