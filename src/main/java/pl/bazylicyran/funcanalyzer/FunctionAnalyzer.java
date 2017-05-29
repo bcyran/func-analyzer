@@ -16,7 +16,7 @@ public class FunctionAnalyzer extends JFrame {
 
 	/** Application name used e.g. as window title */
 	public final static String appName = "Function Analyzer";
-	
+
 	/** Dimensions of application window. */
 	public final static Dimension appDimension = new Dimension(1000, 600);
 

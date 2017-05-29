@@ -86,18 +86,16 @@ public class FunctionAnalyzerUI extends JPanel {
 		JLabel expressionLabel = new JLabel("Functions");
 		addElement(leftPane, expressionLabel, 0, 0, 4, 1, 0, 0, anchor, fill, insets);
 
-		// Expression text field
+		// Expression text field and button
 		JTextField expressionField = new JTextField();
 		addElement(leftPane, expressionField, 0, 1, 4, 1, 0, 0, anchor, fill, insets);
+		JButton expressionButton = new JButton("Draw");
+		addElement(leftPane, expressionButton, 0, 2, 4, 1, 0, 0, anchor, fill, insets);
 		expressionField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawFunction(expressionField.getText());
 			}
 		});
-
-		// Draw button
-		JButton expressionButton = new JButton("Draw");
-		addElement(leftPane, expressionButton, 0, 2, 4, 1, 0, 0, anchor, fill, insets);
 		expressionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawFunction(expressionField.getText());
@@ -129,60 +127,54 @@ public class FunctionAnalyzerUI extends JPanel {
 		insets = new Insets(borderWidth, 0, borderWidth / 2, 0);
 		addElement(leftPane, systemLabel, 0, 4, 4, 1, 0, 0, anchor, fill, insets);
 
-		// Zoom- button
+		// Zoom buttons
 		JButton zoomMinusButton = new JButton("Zoom -");
 		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		addElement(leftPane, zoomMinusButton, 0, 5, 2, 1, 1, 0, anchor, fill, insets);
+		JButton zoomPlusButton = new JButton("Zoom +");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, zoomPlusButton, 2, 5, 2, 1, 1, 0, anchor, fill, insets);
+
 		zoomMinusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomMinus();
 			}
 		});
-
-		// Zoom+ button
-		JButton zoomPlusButton = new JButton("Zoom +");
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		addElement(leftPane, zoomPlusButton, 2, 5, 2, 1, 1, 0, anchor, fill, insets);
 		zoomPlusButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				zoomPlus();
 			}
 		});
 
-		// Move left button
+		// Movement buttons
 		JButton moveLeftButton = new JButton("<");
 		insets = new Insets(borderWidth / 2, 0, borderWidth / 2, 5);
 		addElement(leftPane, moveLeftButton, 0, 6, 1, 1, 1, 0, anchor, fill, insets);
+		JButton moveDownButton = new JButton("v");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveDownButton, 1, 6, 1, 1, 1, 0, anchor, fill, insets);
+		JButton moveUpButton = new JButton("^");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
+		addElement(leftPane, moveUpButton, 2, 6, 1, 1, 1, 0, anchor, fill, insets);
+		JButton moveRightButton = new JButton(">");
+		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
+		addElement(leftPane, moveRightButton, 3, 6, 1, 1, 1, 0, anchor, fill, insets);
+
 		moveLeftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveLeft();
 			}
 		});
-
-		// Move down button
-		JButton moveDownButton = new JButton("v");
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		addElement(leftPane, moveDownButton, 1, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveDownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveDown();
 			}
 		});
-
-		// Move up button
-		JButton moveUpButton = new JButton("^");
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 5);
-		addElement(leftPane, moveUpButton, 2, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveUp();
 			}
 		});
-
-		// Move right button
-		JButton moveRightButton = new JButton(">");
-		insets = new Insets(borderWidth / 2, 5, borderWidth / 2, 0);
-		addElement(leftPane, moveRightButton, 3, 6, 1, 1, 1, 0, anchor, fill, insets);
 		moveRightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				moveRight();
