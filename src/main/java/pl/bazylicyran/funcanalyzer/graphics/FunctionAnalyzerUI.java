@@ -289,7 +289,7 @@ public class FunctionAnalyzerUI extends JPanel {
 	 * @param function Function to draw.
 	 */
 	private void drawFunction(String function) {
-		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(function)) {
+		if (function != null && !function.isEmpty() && !coordinateSystem.inFunctions(transform(function))) {
 			coordinateSystem.clearDrawingArea();
 			coordinateSystem.clearFunctions();
 			addFunction(function);
