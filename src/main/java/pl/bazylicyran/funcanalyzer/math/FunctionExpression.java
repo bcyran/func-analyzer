@@ -10,9 +10,6 @@ public class FunctionExpression extends MathExpression {
 	/** Whether vars changed since last eval or not */
 	private boolean varsChanged = false;
 
-	/** Whether current variable is in domain or not. */
-	private boolean inDomain = true;
-
 	/**
 	 * Calls MathExpression constructor
 	 * 
@@ -33,20 +30,6 @@ public class FunctionExpression extends MathExpression {
 		varsChanged = true;
 	}
 
-	/**
-	 * Returns whether or not current variable is in domain.
-	 * 
-	 * @return True if variable is in domain.
-	 */
-	public boolean inDomain() {
-		if (evaluated == false || varsChanged == true) {
-			eval();
-			varsChanged = false;
-		}
-		
-		return inDomain;
-	}
-
 	@Override
 	public Double getValue() {
 		if (evaluated == false || varsChanged == true) {
@@ -60,13 +43,8 @@ public class FunctionExpression extends MathExpression {
 	@Override
 	protected void eval() {
 		parser.parse();
-		inDomain = parser.inDomain();
 
-		if (inDomain) {
-			value = parser.getValue();
-		} else {
-			value = null;
-		}
+		value = parser.getValue();
 
 		evaluated = true;
 	}

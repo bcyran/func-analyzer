@@ -34,9 +34,6 @@ public class ExpressionParser {
 	/** Value of expression. */
 	private double value;
 
-	/** Whether current variable is in domain or not. */
-	private boolean inDomain = true;
-
 	/** Current position of parser. */
 	private int pos = -1;
 
@@ -78,8 +75,7 @@ public class ExpressionParser {
 			public double eval(double left, double right) {
 
 				if (right == 0) {
-					inDomain = false;
-					return 0;
+					throw new ArithmeticException("Division by zero.");
 				}
 
 				return left / right;
@@ -104,8 +100,7 @@ public class ExpressionParser {
 			public double eval(List<Double> args) {
 
 				if (args.get(0) < 0) {
-					inDomain = false;
-					return 0;
+					throw new ArithmeticException("Square root argument smaller than zero.");
 				}
 
 				return Math.sqrt(args.get(0));
@@ -134,8 +129,7 @@ public class ExpressionParser {
 			public double eval(List<Double> args) {
 
 				if (args.get(0) < 0) {
-					inDomain = false;
-					return 0;
+					throw new ArithmeticException("Natural logarithm argumant smaller than zero.");
 				}
 
 				return Math.log(args.get(0));
@@ -145,9 +139,12 @@ public class ExpressionParser {
 			@Override
 			public double eval(List<Double> args) {
 
-				if (args.get(0) <= 1 || args.get(1) < 0) {
-					inDomain = false;
-					return 0;
+				if (args.get(0) <= 1) {
+					throw new ArithmeticException("Logarithm base smaller or equal zero.");
+				}
+
+				if (args.get(1) < 0) {
+					throw new ArithmeticException("Logharitmized number smaller than zero.");
 				}
 
 				return Math.log(args.get(1)) / Math.log(args.get(0));
@@ -180,16 +177,13 @@ public class ExpressionParser {
 	 */
 	public void parse() {
 		nextToken();
-		value = parseExp();
-	}
 
-	/**
-	 * Returns whether or not current variable is in domain.
-	 * 
-	 * @return True if variable is in domain.
-	 */
-	public boolean inDomain() {
-		return inDomain;
+		try {
+			value = parseExp();
+		} catch (ArithmeticException e) {
+			resetParser();
+			throw e;
+		}
 	}
 
 	/**
@@ -226,8 +220,15 @@ public class ExpressionParser {
 	 * @param value Variable value.
 	 */
 	public void addVariable(String name, double value) {
-		inDomain = true;
 		variables.put(name, value);
+	}
+
+	/**
+	 * Reset parser position and current token.
+	 */
+	private void resetParser() {
+		pos = -1;
+		current = null;
 	}
 
 	/**
@@ -242,8 +243,7 @@ public class ExpressionParser {
 		if (pos <= tokens.size() - 1) {
 			current = tokens.get(pos);
 		} else {
-			pos = -1;
-			current = null;
+			resetParser();
 		}
 	}
 
@@ -315,7 +315,7 @@ public class ExpressionParser {
 		ExpOperator operator = operators.get(current);
 		ExpFunction function = functions.get(current);
 		Double variable = variables.get(current);
-		
+
 		if (current == null) {
 			throw new ExpressionException("Unexpected token.", current, last);
 		}

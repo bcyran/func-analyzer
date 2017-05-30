@@ -88,7 +88,7 @@ public class FunctionDiscretizer {
 	 * @return Discretized points.
 	 */
 	public List<CSPoint> getPoints() {
-		
+
 		if (discretized == false) {
 			discretize();
 		}
@@ -101,19 +101,19 @@ public class FunctionDiscretizer {
 	 */
 	private void discretize() {
 		points.clear();
-		
+
 		function = new FunctionExpression(input);
 		Double value;
 
 		for (double x = intervalStart; x <= intervalEnd; x += resolution) {
 			function.setVar("x", x);
-			
-			if (function.inDomain()) {
+
+			try {
 				value = function.getValue();
-			} else {
+			} catch (ArithmeticException e) {
 				value = null;
 			}
-			
+
 			CSPoint point = new CSPoint(x, value);
 			points.add(point);
 		}
