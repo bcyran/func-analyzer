@@ -14,6 +14,9 @@ import pl.bazylicyran.funcanalyzer.graphics.FunctionAnalyzerUI;
  */
 public class FunctionAnalyzer extends JFrame {
 
+	/** serialVersionUID */
+	private static final long serialVersionUID = 2723345902028026509L;
+
 	/** Application name used e.g. as window title */
 	public final static String appName = "Function Analyzer";
 

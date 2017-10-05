@@ -32,6 +32,9 @@ import pl.bazylicyran.funcanalyzer.parsing.ExpressionException;
  */
 public class FunctionAnalyzerUI extends JPanel {
 
+	/** serialVersionUID */
+	private static final long serialVersionUID = 6513880159137786696L;
+
 	/** Left panel containing controls. */
 	private final JPanel leftPane = new JPanel();
 

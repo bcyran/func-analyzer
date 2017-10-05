@@ -7,6 +7,9 @@ package pl.bazylicyran.funcanalyzer.parsing;
  */
 public class ExpressionException extends RuntimeException {
 
+	/** serialVersionUID */
+	private static final long serialVersionUID = -7593048227322563214L;
+
 	/** Token which caused the exception. */
 	private String currentToken;
 

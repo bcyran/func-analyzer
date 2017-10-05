@@ -21,6 +21,9 @@ import pl.bazylicyran.funcanalyzer.math.FunctionDiscretizer;
  */
 public class CoordinateSystem extends JPanel {
 
+	/** serialVersionUID */
+	private static final long serialVersionUID = -2090243719749065907L;
+
 	/** System width. */
 	private final int width;
 
